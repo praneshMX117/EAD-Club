@@ -1,3 +1,3 @@
 # EAD-Club
 Semester 2 EAD Project
-Guide:Manavalan Sir
+Guide:Dr.Manavalan R
