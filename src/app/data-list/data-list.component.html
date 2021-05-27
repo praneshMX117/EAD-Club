@@ -1,0 +1,12 @@
+<!--<p>data-list works!</p>-->
+<mat-accordion multi="true" *ngIf="details.length > 0">
+  <mat-expansion-panel *ngFor="let detail of  details">
+    <mat-expansion-panel-header>
+      {{detail.name}}
+    </mat-expansion-panel-header>
+    <p>{{detail.gender}}</p>
+    <p>{{detail.phone}}</p>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<p *ngIf="details.length <= 0">No Details added yet!</p>

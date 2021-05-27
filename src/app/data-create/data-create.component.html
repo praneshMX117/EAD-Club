@@ -1,0 +1,43 @@
+<!--<p>data-create works!</p>-->
+<mat-card>
+  <form (submit)="onSaveDetails(postForm)" #postForm="ngForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        type="text"
+        name="name"
+        ngModel
+        required
+        minlength="3"
+        #name="ngModel"/>
+    </mat-form-field>
+
+    <mat-form-field  appearance="fill">
+      <mat-label>Gender</mat-label>
+      <mat-select ngModel name="gender" #gender="ngModel">
+        <mat-option value="Male">Male</mat-option>
+        <mat-option value="Female">Female</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Phone Number</mat-label>
+      <input
+        matInput
+        type="text"
+        name="phone"
+        ngModel
+        required
+        minlength="10"
+        #phone="ngModel">
+    </mat-form-field>
+
+    <button
+      type="submit"
+      color="primary"
+      mat-raised-button>
+        Save Details
+    </button>
+  </form>
+</mat-card>
