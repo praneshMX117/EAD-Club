@@ -81,7 +81,6 @@ body {
 /*End Icon individual styles */
 
 /* copyright Starts */
-
   .copyright {
     font-family: "Sigmar One", cursive;
     position: absolute;
@@ -93,5 +92,4 @@ body {
     background-color: #01ffd3;
     text-align: center;
   }
-
 /* copyright ends */
