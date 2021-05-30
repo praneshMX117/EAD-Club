@@ -1,18 +1,20 @@
-<mat-toolbar style="background-color: #01ffd3">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap" rel="stylesheet">
+<mat-toolbar>
   <mat-toolbar-row>
       <!-- nav bar start -->
         <a mat-button
-          routerLink="/home" routerLinkActive="active">
+          routerLink="/home" [routerLinkActive]="['active']">
           <mat-icon class="icon">home</mat-icon>
           <span class="label" style="font-size:25px;"> HOME</span>
         </a>
         <a mat-button
-           routerLink="/about">
+           routerLink="/about" [routerLinkActive]="['active']">
           <mat-icon class="icon">description</mat-icon>
           <span class="label" style="font-size:25px;"> ABOUT </span>
         </a>
         <a mat-button
-           routerLink="/news">
+           routerLink="/news" [routerLinkActive]="['active']">
           <mat-icon class="icon"> perm_media </mat-icon>
           <span class="label" style="font-size:25px;"> NEWS </span>
         </a>
@@ -20,12 +22,12 @@
         <span class="spacer"></span>
 
         <a mat-button
-           routerLink="/login">
+           routerLink="/login" [routerLinkActive]="['active']">
           <mat-icon class="icon">input</mat-icon>
           <span class="label" style="font-size:25px;"> LOGIN </span>
         </a>
         <a mat-button
-           routerLink="/signup">
+           routerLink="/signup" [routerLinkActive]="['active']">
           <mat-icon class="icon">account_circle</mat-icon>
           <span class="label" style="font-size:25px;"> SIGNUP </span>
         </a>
