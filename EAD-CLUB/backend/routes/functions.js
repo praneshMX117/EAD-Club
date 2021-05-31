@@ -6,8 +6,8 @@ const router = express.Router();
 router.post('',(req,res,next) => {
   const record = new Record({
     name: req.body.name,
-    gender: req.body.gender,
-    phone: req.body.phone
+    email: req.body.email,
+    password: req.body.password
   });
   record.save().then(createdRecord => {
     res.status(201).json({ //everything is ok and new resources where created.
@@ -17,7 +17,7 @@ router.post('',(req,res,next) => {
   });
 });
 
-router.get('',(req,res,next) => {
+/*router.get('',(req,res,next) => {
   Record.find()
     .then(documents => {
       res.status(200).json({ //everything is ok.
@@ -25,6 +25,6 @@ router.get('',(req,res,next) => {
         details: documents
       });
     });
-  });
+  });*/
 
 module.exports = router;

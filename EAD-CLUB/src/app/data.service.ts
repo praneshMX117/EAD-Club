@@ -13,8 +13,8 @@ export class Service{
 
   constructor(private http: HttpClient,private router:Router){}
 
-  addDetails(name: string,gender: string,phone: string){
-    const record: Detail = { id: "", name: name, gender: gender, phone: phone};
+  addDetails(name: string,email: string,password: string){
+    const record: Detail = { id: "", name: name, email: email, password: password};
     this.http.post<{message:string,id:string}>('http://localhost:3000/api/data/',record)
       .pipe()
       .subscribe((response) => {
@@ -23,11 +23,13 @@ export class Service{
         record.id = id;
         this.records.push(record);
         this.updatedRecords.next([...this.records]);
-        this.router.navigate(['/']);
+        this.router.navigate(['/']).then(r => {
+          console.log("Page Redirected to Home.");
+        });
       });
   }
 
-  getDetails(){
+  /*getDetails(){
     this.http.get<{message: string, details: any}>('http://localhost:3000/api/data')
       .pipe(map((recordData) => {
         return recordData.details.map( (record:any) => {
@@ -42,6 +44,6 @@ export class Service{
 
   getDetailUpdateListener(){
     return this.updatedRecords.asObservable();
-  }
+  }*/
 
 }

@@ -1,4 +1,4 @@
-mat-spinner {
+/*mat-spinner {
   margin: auto;
 }
 .mat-stepper-vertical {
@@ -7,4 +7,12 @@ mat-spinner {
 
 .mat-form-field {
   margin-top: 16px;
+}*/
+
+mat-card {
+  margin: auto;
+  max-width: 400px;
+}
+mat-form-field {
+  width: 100%;
 }

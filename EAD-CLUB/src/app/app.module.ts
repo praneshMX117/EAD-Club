@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,6 +16,7 @@ import { MatListModule } from  '@angular/material/list';
 import { MatButtonModule } from  '@angular/material/button';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatStepperModule} from '@angular/material/stepper';
+import {MatCardModule} from '@angular/material/card';
 
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
@@ -41,6 +43,7 @@ import { SignupComponent } from './signup/signup.component';
     BrowserAnimationsModule,
 
     FormsModule,
+    HttpClientModule,
 
     MatInputModule,
     MatFormFieldModule,
@@ -51,7 +54,8 @@ import { SignupComponent } from './signup/signup.component';
     MatButtonModule,
     MatProgressSpinnerModule,
     MatStepperModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
