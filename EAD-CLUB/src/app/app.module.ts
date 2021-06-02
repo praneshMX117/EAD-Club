@@ -23,6 +23,8 @@ import { AboutComponent } from './about/about.component';
 import { NewsComponent } from './news/news.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { PartnersComponent } from './partners/partners.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -33,15 +35,15 @@ import { SignupComponent } from './signup/signup.component';
     AboutComponent,
     NewsComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    PartnersComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-
     FormsModule,
-
     MatInputModule,
     MatFormFieldModule,
     MatToolbarModule,

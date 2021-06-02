@@ -1,30 +1,55 @@
 /* Sticky footer styles
 -------------------------------------------------- */
-html {
+/*html {
   position: relative;
   min-height: 100%;
 }
-body {
-  margin-bottom: 60px; /* Margin bottom by footer height */
-}
+/*body {
+  margin-bottom: 60px; /* Margin bottom by footer height }*/
+
 /* Footer Font */
-@font-face {
+/*@font-face {
   font-family: "Sigmar One";
   src: url('https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap') format("opentype");
 }
 /* End Font */
+.blog-footer {
+  padding: 2.5rem 0;
+  color: #999;
+  text-align: center;
+  background-color: #01ffd3;
+  border-top: .05rem solid #e5e5e5;
+}
+.blog-footer p:last-child {
+  margin-bottom: 0;
+}
+/*
 .footer {
   font-family: "Sigmar One", cursive;
-  position: absolute;
+  position: relative;
   bottom: 15px;
   left: 10px;
   width: 99%;
-  height: 80px; /* Set the fixed height of the footer here */
-  line-height: 60px; /* Vertically center the text there */
+  height: 80px; /* Set the fixed height of the footer here
+  line-height: 60px; /* Vertically center the text there
   background-color: #01ffd3;
   text-align:center;
 }
+/* copyright Starts
 
+.copyright {
+  font-family: "Sigmar One", cursive;
+  position: relative;
+  bottom: 0;
+  left: 10px;
+  width: 99%;
+  height: 40px; /* Set the fixed height of the footer here
+  line-height: 60px; /* Vertically center the text there
+  background-color: #01ffd3;
+  text-align: center;
+}
+/* copyright ends */
+/*
 .container {
   width: auto;
   max-width: 680px;
@@ -80,16 +105,3 @@ body {
 }
 /*End Icon individual styles */
 
-/* copyright Starts */
-  .copyright {
-    font-family: "Sigmar One", cursive;
-    position: absolute;
-    bottom: 0;
-    left: 10px;
-    width: 99%;
-    height: 40px; /* Set the fixed height of the footer here */
-    line-height: 60px; /* Vertically center the text there */
-    background-color: #01ffd3;
-    text-align: center;
-  }
-/* copyright ends */

@@ -5,7 +5,7 @@ const dataRoutes = require('./routes/functions');
 
 const app = express();
 
-mongoose.connect('mongodb://127.0.0.1/PostAppDatabase'
+mongoose.connect('mongodb://127.0.0.1/EadClub'
   ,{useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => {
     console.log('Connected to Database!');
