@@ -6,8 +6,8 @@ const router = express.Router();
 router.post('',(req,res,next) => {
   const record = new Record({
     name: req.body.name,
-    password: req.body.gender,
-    email: req.body.phone
+    gender: req.body.gender,
+    phone: req.body.phone
   });
   record.save().then(createdRecord => {
     res.status(201).json({ //everything is ok and new resources where created.
