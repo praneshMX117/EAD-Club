@@ -62,6 +62,7 @@ import { SignupComponent } from './signup/signup.component';
     MatMenuModule,
     FlexLayoutModule,
     MatSnackBarModule
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
