@@ -36,6 +36,7 @@ router.post('',(req,res,next) => {
   });*/
 
 router.get('',(req,res,next) => {
+
   Record.find({name:"aru"})
     .then(documents => {
       res.status(200).json({ //everything is ok.
