@@ -17,6 +17,9 @@ import { MatButtonModule } from  '@angular/material/button';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatCardModule} from '@angular/material/card';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
@@ -55,7 +58,10 @@ import { SignupComponent } from './signup/signup.component';
     MatProgressSpinnerModule,
     MatStepperModule,
     ReactiveFormsModule,
-    MatCardModule
+    MatCardModule,
+    MatMenuModule,
+    FlexLayoutModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

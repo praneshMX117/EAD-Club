@@ -1,4 +1,21 @@
-mat-spinner {
+.container {
+  background: url('./images/Signup-BackgroundImage.jpg')  no-repeat center center fixed;
+  height: 85vh;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+mat-card {
+  margin: auto;
+  max-width: 400px;
+}
+mat-form-field {
+  width: 100%;
+}
+
+/*mat-spinner {
   margin: auto;
 }
 .mat-stepper-vertical {
@@ -7,4 +24,4 @@ mat-spinner {
 
 .mat-form-field {
   margin-top: 16px;
-}
+}*/

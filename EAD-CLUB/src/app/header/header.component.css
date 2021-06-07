@@ -1,7 +1,3 @@
-@font-face {
-  font-family: "Sigmar One";
-  src: url('https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap') format("opentype");
-}
 mat-toolbar{
   font-family: "Sigmar One", cursive;
   background-color: #01ffd3;

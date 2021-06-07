@@ -1,117 +1,132 @@
-<!--<form [formGroup]="firstFormGroup">
-  <mat-vertical-stepper [linear]="isLinear" #stepper>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Squada+One&display=swap" rel="stylesheet">
 
-    <mat-step [stepControl]="firstFormGroup">
-      <ng-template matStepLabel>Fill out your name</ng-template>
-      <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input type="text" matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </mat-step>
+<div class="container">
+  <form [formGroup]="signUpFormGroup" (submit)="onSaveDetails()">
+    <mat-vertical-stepper [linear]="true">
 
-    <mat-step [stepControl]="firstFormGroup">
-      <ng-template matStepLabel>Fill your email</ng-template>
-      <mat-form-field>
-        <mat-label>Email Id</mat-label>
-        <input type="email" matInput formControlName="firstCtrl" placeholder="abc@xyz.com"
-               required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </mat-step>
+      <mat-step>
+        <ng-template matStepLabel><span class="form-label">Fill out your name</span></ng-template>
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Alice Trent"
+            id="name"
+            formControlName="name"
+            [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
+          />
+        </mat-form-field>
+        <div>
+          <mat-error *ngIf="f.name.invalid">
+            3 to 32 letters, alphabets,<br>
+            spaces are allowed.
+          </mat-error>
+        </div>
+        <br>
+        <div>
+          <button
+            mat-button
+            color="primary"
+            mat-raised-button
+            matStepperNext
+            [disabled]="!f.name.valid">Next</button>
+        </div>
+      </mat-step>
 
-    <mat-step [stepControl]="firstFormGroup">
-      <ng-template matStepLabel>Fill your Password</ng-template>
-      <mat-form-field>
-        <mat-label>Password</mat-label>
-        <input type="password" matInput formControlName="firstCtrl" placeholder="password"
-               required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </mat-step>
+      <mat-step>
+        <ng-template matStepLabel><span class="form-label">Fill your email</span></ng-template>
+        <mat-form-field>
+          <mat-label>Email Id</mat-label>
+          <input
+            matInput
+            type="email"
+            placeholder="abc@xyz.com"
+            id="email"
+            required
+            formControlName="email"
+            [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+          />
+        </mat-form-field>
+        <div>
+          <mat-error *ngIf="f.email.invalid">
+            should be a valid one.
+          </mat-error>
+        </div>
+        <br>
+        <div>
+          <button mat-button color="primary" mat-raised-button matStepperPrevious>Back</button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            mat-button
+            color="primary"
+            mat-raised-button
+            matStepperNext
+            [disabled]="!f.email.valid">Next</button>
+        </div>
+      </mat-step>
 
-    <mat-step [stepControl]="firstFormGroup">
-      <ng-template matStepLabel>Confirm your Password</ng-template>
-      <mat-form-field>
-        <mat-label>Confirm Password</mat-label>
-        <input type="password" matInput formControlName="firstCtrl" placeholder="password"
-               required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </mat-step>
+      <mat-step>
+        <ng-template matStepLabel><span class="form-label">Fill your Password</span></ng-template>
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            placeholder="password"
+            id="password"
+            required
+            formControlName="password"
+            [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+          />
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+        <div>
+          <mat-error *ngIf="f.password.invalid">
+            Should contains min 8 Chars<br>
+            UpperCase, LowerCase,<br>
+            Number/SpecialChar
+          </mat-error>
+        </div>
+        <br>
+        <div>
+          <button mat-button color="primary" mat-raised-button matStepperPrevious>Back</button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            mat-button
+            color="primary"
+            mat-raised-button
+            matStepperNext
+            [disabled]="!f.password.valid">Next</button>
+        </div>
+      </mat-step>
 
-    <mat-step>
-      <ng-template matStepLabel>Done</ng-template>
-      <p>You are now done.</p>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="stepper.reset()">Reset</button>
-      </div>
-    </mat-step>
-  </mat-vertical-stepper>
-</form>-->
-<mat-card>
-  <!-- Form Starts -->
-  <form (submit)="onSaveDetails(postForm)" #postForm="ngForm">
-    <!-- Name Field Starts -->
-    <mat-form-field appearance="fill">
-      <mat-label>Name</mat-label>
-      <input
-        matInput
-        type="text"
-        name="name"
-        ngModel
-        required
-        minlength="3"
-        #name="ngModel"/>
-    </mat-form-field>
-    <!-- Name Field Ends -->
-
-    <!-- Email Field Starts -->
-    <mat-form-field appearance="fill">
-      <mat-label>Email</mat-label>
-      <input
-        matInput
-        type = "email"
-        name = "email"
-        ngModel
-        required
-        #email = "ngModel">
-    </mat-form-field>
-    <!-- Email Field Ends -->
-
-    <!-- Password Field Starts -->
-    <mat-form-field appearance="fill">
-      <mat-label>Password</mat-label>
-      <input
-        matInput
-        type = "password"
-        name = "password"
-        ngModel
-        required
-        #password = "ngModel">
-    </mat-form-field>
-    <!-- Password Field Ends -->
-
-    <!-- Submit Button Starts-->
-    <button
-      type="submit"
-      color="primary"
-      mat-raised-button>
-      Save Details
-    </button>
-    <!-- Submit Button Ends -->
+      <mat-step>
+        <ng-template matStepLabel><span class="form-label">Confirm your Password</span></ng-template>
+        <mat-form-field>
+          <mat-label>Confirm Password</mat-label>
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            placeholder="password"
+            id="confirmPassword"
+            required
+            formControlName="confirmPassword"
+            [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }"
+          />
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+        <div>
+          <button mat-button color="primary" mat-raised-button matStepperPrevious>Back</button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button mat-button color="primary" mat-raised-button [disabled]="!f.confirmPassword.valid" type="submit">Sign Up</button>
+        </div>
+      </mat-step>
+    </mat-vertical-stepper>
   </form>
-  <!-- Form Ends -->
-</mat-card>
+</div>
