@@ -6,7 +6,7 @@ const dataRoutes = require('./routes/functions');
 const app = express();
 
 mongoose.connect('mongodb://127.0.0.1/EadClub'
-  ,{useNewUrlParser: true, useUnifiedTopology: true})
+  ,{useNewUrlParser: true, useUnifiedTopology: true , useCreateIndex : true ,  useFindAndModify: false })
   .then(() => {
     console.log('Connected to Database!');
   })
@@ -14,15 +14,16 @@ mongoose.connect('mongodb://127.0.0.1/EadClub'
     console.log('Connection Failed!');
   });
 
-
 app.use(express.json({limit: '20mb'}));
 app.use(express.urlencoded({ extended: false, limit: '20mb' }));
+
+
 
 app.use((req,res,next) => {
   res.setHeader("Access-Control-Allow-Origin","*");
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
   res.setHeader(
     "Access-Control-Allow-Methods",

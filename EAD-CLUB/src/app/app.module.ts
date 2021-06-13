@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {HttpClientModule , HTTP_INTERCEPTORS } from "@angular/common/http";
 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -28,6 +28,9 @@ import { AboutComponent } from './about/about.component';
 import { NewsComponent } from './news/news.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { ArticleComponent } from './article/article.component';
+import {AuthGuard} from "./auth.guard";
+import {TokenInterceptorService} from "./token-interceptor.service";
 
 @NgModule({
   declarations: [
@@ -38,16 +41,15 @@ import { SignupComponent } from './signup/signup.component';
     AboutComponent,
     NewsComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    ArticleComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-
     FormsModule,
     HttpClientModule,
-
     MatInputModule,
     MatFormFieldModule,
     MatToolbarModule,
@@ -63,7 +65,13 @@ import { SignupComponent } from './signup/signup.component';
     FlexLayoutModule,
     MatSnackBarModule
   ],
-  providers: [],
+  providers: [ AuthGuard ,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass : TokenInterceptorService,
+      multi : true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

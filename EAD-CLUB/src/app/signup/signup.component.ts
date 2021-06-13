@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { Service } from '../data.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
-
+import {Router} from '@angular/router'
+import {HttpErrorResponse} from "@angular/common/http";
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -14,7 +15,7 @@ export class SignupComponent implements OnInit {
   submitted = false;
   hide = true;
 
-  constructor(private formBuilder: FormBuilder,public service: Service,private _snackBar: MatSnackBar) {
+  constructor(private formBuilder: FormBuilder,public service: Service,private _snackBar: MatSnackBar,private _router : Router) {
     this.createForm();
   }
 
@@ -34,25 +35,35 @@ export class SignupComponent implements OnInit {
     this._snackBar.open(message, action);
   }
 
-  onSaveDetails(/*form : NgForm*/){
+  onSaveDetails(){
     this.submitted = true;
-    if(this.signUpFormGroup != null){
-      if(this.signUpFormGroup.invalid){
+    if(this.signUpFormGroup != null) {
+      if (this.signUpFormGroup.invalid) {
         return;
       }
-      if(this.signUpFormGroup.value.password != this.signUpFormGroup.value.confirmPassword){
-        this.openSnackBar("Password Mismatched!!!","Ok");
+      if (this.signUpFormGroup.value.password != this.signUpFormGroup.value.confirmPassword) {
+        this.openSnackBar("Password Mismatched!!!", "Ok");
         return;
       }
       this.service.addDetails(
         this.signUpFormGroup.value.name,
         this.signUpFormGroup.value.email,
         this.signUpFormGroup.value.password
+      ).subscribe((response) => {
+        console.log(response.message);
+        localStorage.setItem( 'token' , response.token )
+        this._router.navigate(['/news']);
+      },(err: any) => {
+        if( err instanceof HttpErrorResponse ){
+          if( err.status === 401 )
+          {
+            alert(err)
+          }
+        }
+      }
       );
     }
   }
-
   ngOnInit() {
   }
-
 }
