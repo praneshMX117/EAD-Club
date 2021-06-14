@@ -28,18 +28,24 @@ import { AboutComponent } from './about/about.component';
 import { NewsComponent } from './news/news.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import {PartnersComponent} from "./partners/partners.component";
+import { CarouselComponent } from './carousel/carousel.component';
+import { ActivitiesComponent } from './activities/activities.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    FooterComponent,
-    HeaderComponent,
-    HomeComponent,
-    AboutComponent,
-    NewsComponent,
-    LoginComponent,
-    SignupComponent
-  ],
+    declarations: [
+        AppComponent,
+        FooterComponent,
+        HeaderComponent,
+        HomeComponent,
+        AboutComponent,
+        NewsComponent,
+        LoginComponent,
+        SignupComponent,
+        PartnersComponent,
+        CarouselComponent,
+        ActivitiesComponent
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
