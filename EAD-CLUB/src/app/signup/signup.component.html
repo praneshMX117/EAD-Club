@@ -1,5 +1,5 @@
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Squada+One&display=swap" rel="stylesheet">
+<!--link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Squada+One&display=swap" rel="stylesheet"-->
 
 <div class="container">
   <form [formGroup]="signUpFormGroup" (submit)="onSaveDetails()">
@@ -15,6 +15,7 @@
             placeholder="Alice Trent"
             id="name"
             formControlName="name"
+
             [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
           />
         </mat-form-field>
@@ -26,11 +27,7 @@
         </div>
         <br>
         <div>
-          <button
-            mat-button
-            color="primary"
-            mat-raised-button
-            matStepperNext
+          <button             mat-button            color="primary"            mat-raised-button            matStepperNext
             [disabled]="!f.name.valid">Next</button>
         </div>
       </mat-step>

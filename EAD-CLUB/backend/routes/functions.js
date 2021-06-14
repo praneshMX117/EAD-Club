@@ -1,108 +1,193 @@
 const express = require("express");
 const Record = require('../models/data-object');
-const bcrypt = require("bcrypt");
+const Increment = require('../models/auto');
 const jwt = require("jsonwebtoken");
 
 const router = express.Router();
+/* auto increment uid and insert user */
+function insertUser( req , res ){
+  let seq_val = 0;
+  Increment.findOne({name:"pranesh"}).then(result => {
+    if( result ) {
+      console.log(`Successfully found document: ${result}.`);
+      var str = JSON.stringify(result);
+      var myarray = str.split(':');
+      var seq = myarray[2].split(',');
+      console.log('Value is :  ' + seq[0]);
+      if( seq[0] )
+      {
+        Increment.findOneAndUpdate({ name : "pranesh" }, { sequence_value : parseInt(seq[0]) + 1 } )
+          .then(updatedDocument => {
+            if(updatedDocument) {
+              console.log(`Successfully updated document: ${updatedDocument}.`)
+              seq_val =  parseInt( seq[0] ) + 1
+                console.log("Inside insertUser" +  seq_val + req + res )
+                if (seq_val) {
+                  const user = new Record({
+                    uid: seq_val,
+                    name: req.body.name,
+                    email: req.body.email,
+                    password: req.body.password
+                  });
 
-router.post('',(req,res,next) => {
-  const record = new Record({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password
-  });
-  record.save().then(createdRecord => {
-    res.status(201).json({ //everything is ok and new resources where created.
-      message: 'Record added successfully',
-      postId: createdRecord._id
-      });
-  });
-});
+                  user.save((error, registeredUser) => {
+                    if (error) {
+                      console.log(error)
+                      res.status(401).send(error.error)
+                    } else {
+                      let payload = {subject: registeredUser._id}
+                      let token = jwt.sign(payload, 'secretKey')
+                      res.status(200).send({token})
+                    }
+                  })
+                }
+            } else {
+              console.log("No document matches the provided query.")
+            }
+          })
+          .catch(err => console.error(`Failed to find and update document: ${err}`))
+      }
+    } else {
+      console.log("No document matches the provided query.");
+    }
+  }) .catch(err => console.error(`Failed to find document: ${err}`));
 
- /*router.post('/find',(req,res,next) => {
-  //Record.find()
-    Record.find({
-      'name': req.body.name,
-      'email': req.body.email,
-      'password': req.body.password
-    })
-    .then(documents => {
-      res.status(200).json({ //everything is ok.
-        message: 'Details fetched successfully!',
-        details: documents
-      });
-      console.log(documents);
-    });
-  });*/
-
-router.get('',(req,res,next) => {
-
-  Record.find({name:"aru"})
-    .then(documents => {
-      res.status(200).json({ //everything is ok.
-        message: 'Details fetched successfully!',
-        details: documents
-      });
-      console.log(documents);
-    });
-});
-
+ }
+/* auto increment uid  and insert user ends*/
+/* Token Verifier */
+function verifyToken( req , res , next ) {
+  if( !req.headers.authorization ){
+    return res.status(401).send( "Unauthorized request ")
+  }
+  let token = req.headers.authorization.split(' ')[1]
+  if( token === 'null' )
+  {
+    return res.status(401).send( "Unauthorized req ")
+  }
+  let payload = jwt.verify( token,'secretKey')
+  if( !payload ){
+    return res.status(401).send( "Unauthorized user ")
+  }
+  req.userId = payload.subject
+  next()
+}
+/* END Token Verifier */
+/* start signup */
 router.post("/signup", (req, res, next) => {
-  bcrypt.hash(req.body.password,10)
-    .then(hash => {
-      const record = new Record({
-        name: req.body.name,
-        email: req.body.email,
-        password: hash
-      });
+      insertUser( req , res )
 
-      record.save().then(result => {
-        res.status(201).json({
-          message: "User Registered",
-          result: result
-        })
-      }).catch( err => {
-        res.status(500).json({
-          //error: err
-          message: "User Already Exists"
-        });
-      })
-    });
-  });
-
-router.post("/login", (req,res,next) => {
-  let fetchedUser;
-  Record.findOne({email: req.body.email})
-    .then( user => {
-      if(!user) {
-        return res.status(401).json({
-          message : "Auth failed"
-        })
-      }
-      fetchedUser = user;
-      return bcrypt.compare(req.body.password, user.password);
-    })
-    .then( result => {
-      if(!result){
-        return res.status(401).json({
-          message: "Auth failed"
-        });
-      }
-      const token = jwt.sign({email: fetchedUser.email, userId: fetchedUser._id},'secret',{expiresIn: "1h"});
-      res.status(200).json({
-        message: "Auth Successful",
-        token: token,
-        id : fetchedUser._id,
-        name: fetchedUser.name,
-        email: fetchedUser.email
-      });
-    })
-    .catch( err => {
-      console.log("Auth Failed")
-      return res.status(401).json({
-        message: "Auth failed"
-      });
-    });
 });
 
+/* sign Up */
+
+/* Login API */
+router.post( '/login' , (req,res)=>{
+  let userData = req.body
+  Record.findOne({email:userData.email},(error,user)=>{
+    if( error ){
+      console.log("Error in login :  "+error )
+    }
+    else{
+      if( !user )
+      {
+        res.status(401).send( "Invalid Email")
+      }
+      else{
+        if( user.password !== userData.password ){
+          res.status(401).send( "Invalid Password")
+        }
+        else{
+          console.log("In Login :")
+          let payload = { subject : user._id }
+          let token = jwt.sign( payload, 'secretKey')
+          res.status(200).send({token} )
+        }
+      }
+    }
+  })
+})
+/* End Login API */
+/* Api for news */
+router.get( '/news' , verifyToken, (req ,res )=> {
+  // events has Name City Country
+  let specials = [
+    {
+      "Name": "Alfreds Futterkiste",
+      "City": "Berlin",
+      "Country": "Germany"
+    },
+    {
+      "Name": "Ana Trujillo Emparedados y helados",
+      "City": "México D.F.",
+      "Country": "Mexico"
+    },
+    {
+      "Name": "Antonio Moreno Taquería",
+      "City": "México D.F.",
+      "Country": "Mexico"
+    },
+    {
+      "Name": "Around the Horn",
+      "City": "London",
+      "Country": "UK"
+    },
+    {
+      "Name": "B's Beverages",
+      "City": "London",
+      "Country": "UK"
+    },
+    {
+      "Name": "Berglunds snabbköp",
+      "City": "Luleå",
+      "Country": "Sweden"
+    },
+    {
+      "Name": "Blauer See Delikatessen",
+      "City": "Mannheim",
+      "Country": "Germany"
+    },
+    {
+      "Name": "Blondel père et fils",
+      "City": "Strasbourg",
+      "Country": "France"
+    },
+    {
+      "Name": "Bólido Comidas preparadas",
+      "City": "Madrid",
+      "Country": "Spain"
+    },
+    {
+      "Name": "Bon app'",
+      "City": "Marseille",
+      "Country": "France"
+    },
+    {
+      "Name": "Bottom-Dollar Marketse",
+      "City": "Tsawassen",
+      "Country": "Canada"
+    },
+    {
+      "Name": "Cactus Comidas para llevar",
+      "City": "Buenos Aires",
+      "Country": "Argentina"
+    },
+    {
+      "Name": "Centro comercial Moctezuma",
+      "City": "México D.F.",
+      "Country": "Mexico"
+    },
+    {
+      "Name": "Chop-suey Chinese",
+      "City": "Bern",
+      "Country": "Switzerland"
+    },
+    {
+      "Name": "Comércio Mineiro",
+      "City": "São Paulo",
+      "Country": "Brazil"
+    }
+  ]
+  res.json( specials )
+})
+/* Api news ends */
 module.exports = router;

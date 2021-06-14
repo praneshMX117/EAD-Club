@@ -25,6 +25,7 @@
     "angular": "^1.8.2",
     "bcrypt": "^5.0.1",
     "bootstrap": "^5.0.1",
+    "bootstrap-icons": "^1.5.0",
     "core-js": "^3.13.1",
     "enhanced-resolve": "^5.8.2",
     "express": "^4.17.1",

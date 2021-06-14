@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {HttpClientModule , HTTP_INTERCEPTORS } from "@angular/common/http";
 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -28,32 +28,34 @@ import { AboutComponent } from './about/about.component';
 import { NewsComponent } from './news/news.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { ArticleComponent } from './article/article.component';
+import {AuthGuard} from "./auth.guard";
+import {TokenInterceptorService} from "./token-interceptor.service";
 import {PartnersComponent} from "./partners/partners.component";
 import { CarouselComponent } from './carousel/carousel.component';
 import { ActivitiesComponent } from './activities/activities.component';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        FooterComponent,
-        HeaderComponent,
-        HomeComponent,
-        AboutComponent,
-        NewsComponent,
-        LoginComponent,
-        SignupComponent,
-        PartnersComponent,
-        CarouselComponent,
-        ActivitiesComponent
-    ],
+  declarations: [
+    AppComponent,
+    FooterComponent,
+    HeaderComponent,
+    HomeComponent,
+    AboutComponent,
+    NewsComponent,
+    LoginComponent,
+    SignupComponent,
+    ArticleComponent,
+    PartnersComponent,
+    CarouselComponent,
+    ActivitiesComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-
     FormsModule,
     HttpClientModule,
-
     MatInputModule,
     MatFormFieldModule,
     MatToolbarModule,
@@ -69,7 +71,13 @@ import { ActivitiesComponent } from './activities/activities.component';
     FlexLayoutModule,
     MatSnackBarModule
   ],
-  providers: [],
+  providers: [ AuthGuard ,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass : TokenInterceptorService,
+      multi : true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import {Service} from "../data.service";
 import {Detail} from "../data.model";
+import {Router} from '@angular/router'
+import {HttpErrorResponse } from '@angular/common/http'
 
 @Component({
   selector: 'app-login',
@@ -11,31 +13,29 @@ import {Detail} from "../data.model";
 export class LoginComponent implements OnInit {
 
   result: Detail[] | undefined;
-  constructor(public service: Service) {
+  public loginUserData : any = {}
+
+  constructor(public service: Service , private _router : Router ) {
   }
 
   onLoggingIn(form : NgForm){
     if(form.invalid){
       return;
     }
-    //this.service.getDetails(form.value.name,form.value.email,form.value.password);
-    //this.result = this.service.getDetails();
-    //console.log(this.result);
-    this.service.login(form.value.name,form.value.email,form.value.password);
+    this.service.login(this.loginUserData).subscribe((res: any) => {
+        localStorage.setItem( 'token' , res.token )
+        this._router.navigate(['/news'])
+      },
+      (err: any) => {
+        if( err instanceof HttpErrorResponse ){
+          if( err.status === 401 )
+          {
+            alert(err.error)
+          }
+        }
+      }
+    );
   }
   ngOnInit() {
-    /*this.service.getDetails().subscribe(result => {
-      this.result = result;
-    })*/
   }
-  /*isLinear = false;
-  firstFormGroup: FormGroup;
-  constructor(private _formBuilder: FormBuilder) {
-    this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
-    });
-  }
-  ngOnInit(): void {
-  }*/
-
 }

@@ -21,14 +21,19 @@
     <span class="spacer"></span>
 
     <a mat-button
-       routerLink="/login" [routerLinkActive]="['active']">
-      <mat-icon class="icon">input</mat-icon>
+       routerLink="/login" [routerLinkActive]="['active']" *ngIf="!_authService.loggedIn()">
+      <mat-icon class="icon"> input </mat-icon>
       <span class="label" style="font-size:25px;"> LOGIN </span>
     </a>
     <a mat-button
-       routerLink="/signup" [routerLinkActive]="['active']">
-      <mat-icon class="icon">account_circle</mat-icon>
+       routerLink="/signup" [routerLinkActive]="['active']" *ngIf="!_authService.loggedIn()">
+      <mat-icon class="icon"> account_circle </mat-icon>
       <span class="label" style="font-size:25px;"> SIGNUP </span>
+    </a>
+    <a mat-button
+       routerLink="/signup" [routerLinkActive]="['active']" *ngIf="_authService.loggedIn()" (click)="_authService.logoutUser()">
+      <mat-icon class="icon">account_circle</mat-icon>
+      <span class="label" style="font-size:25px;"> Logout </span>
     </a>
   </mat-toolbar-row>
 
@@ -36,6 +41,7 @@
       <button mat-button [matMenuTriggerFor]="menu">
           <mat-icon class="icon">menu</mat-icon>
       </button>
+
       <mat-menu #menu="matMenu">
         <button mat-menu-item>
           <a mat-button
@@ -44,6 +50,7 @@
             <span class="label" style="font-size:25px;"> HOME</span>
           </a>
         </button>
+
         <button mat-menu-item>
           <a mat-button
              routerLink="/about" [routerLinkActive]="['active']">
@@ -51,6 +58,7 @@
             <span class="label" style="font-size:25px;"> ABOUT </span>
           </a>
         </button>
+
         <button mat-menu-item>
           <a mat-button
              routerLink="/news" [routerLinkActive]="['active']">
@@ -58,20 +66,31 @@
             <span class="label" style="font-size:25px;"> NEWS </span>
           </a>
         </button>
+
         <button mat-menu-item>
           <a mat-button
-             routerLink="/login" [routerLinkActive]="['active']">
+             routerLink="/signup" [routerLinkActive]="['active']" *ngIf="_authService.loggedIn()" (click)="_authService.logoutUser()">
+            <mat-icon class="icon">account_circle</mat-icon>
+            <span class="label" style="font-size:25px;"> Logout </span>
+          </a>
+        </button>
+
+        <button mat-menu-item>
+          <a mat-button
+             routerLink="/login" [routerLinkActive]="['active']" *ngIf="!_authService.loggedIn()">
             <mat-icon class="icon">input</mat-icon>
             <span class="label" style="font-size:25px;"> LOGIN </span>
           </a>
         </button>
+
         <button mat-menu-item>
           <a mat-button
-             routerLink="/signup" [routerLinkActive]="['active']">
+             routerLink="/signup" [routerLinkActive]="['active']" *ngIf="!_authService.loggedIn()">
             <mat-icon class="icon">account_circle</mat-icon>
             <span class="label" style="font-size:25px;"> SIGNUP </span>
           </a>
         </button>
+
       </mat-menu>
     </mat-toolbar-row>
 </mat-toolbar>
