@@ -5,7 +5,7 @@
     <a mat-button
        routerLink="/home" [routerLinkActive]="['active']">
       <mat-icon class="icon">home</mat-icon>
-      <span class="label" style="font-size:25px;"> HOME</span>
+      <span class="label" style="font-size:25px;"> {{title}}</span>
     </a>
     <a mat-button
        routerLink="/about" [routerLinkActive]="['active']">
@@ -47,7 +47,7 @@
           <a mat-button
              routerLink="/home" [routerLinkActive]="['active']">
             <mat-icon class="icon">home</mat-icon>
-            <span class="label" style="font-size:25px;"> HOME</span>
+            <span class="label" style="font-size:25px;"> {{title}}</span>
           </a>
         </button>
 
