@@ -35,9 +35,34 @@ const imageStorage = multer.diskStorage({
 });
 /* Image Handling Ends */
 
+const ArticleOne = require('../models/authorSchema')
+const DiscussAuto = require('../models/discuss-auto')
+const jwt = require("jsonwebtoken");
+/* Token Verifier */
+function verifyToken( req , res , next ) {
+  if( !req.headers.authorization ){
+    return res.status(401).send( "Unauthorized request ")
+  }
+  //console.log( req )
+  let token = req.headers.authorization.split(' ')[1]
+  if( token === 'null' )
+  {
+    return res.status(401).send( "Unauthorized req ")
+  }
+  let payload = jwt.verify( token,'secretKey')
+  //console.log( "Payload is : " + payload )
+  if( !payload ){
+    return res.status(401).send( "Unauthorized user ")
+  }
+  req.userId = payload.subject
+  //console.log( " id is :" + payload.subject )
+  next()
+}
+/* END Token Verifier */
+
 /* article data handlers*/
 /* article get by date */
-router.get( '/articles' ,  (req ,res )=> {
+router.get( '/articles' , verifyToken ,(req ,res )=> {
     Article.find({ } ,(error,user)=>{
     if( error ){
       console.log("Error in All Article Fetch :  "+error )
@@ -88,6 +113,20 @@ function insertArticle( req , res ){
                   } else {
                     //res.status(200).send("Article Inserted Successfully "+articleReg)
                     res.status(200).json("New Article Created!!!")
+                    const art = new DiscussAuto({
+                      sequence_value : 0,
+                      aid : seq_val
+                    })
+                    art.save((error, articleReg) => {
+                      if (error) {
+                        console.log(error)
+                        res.status(401).send(error.error)
+                      }
+                      else{
+                        console.log("Added a auto increment for discussion")
+                      }
+                    })
+                    res.status(200).send("Article Inserted Successfully "+articleReg)
                   }
                 })
               }
@@ -103,7 +142,7 @@ function insertArticle( req , res ){
   }) .catch(err => console.error(`Failed to find document: ${err}`));
 }
 
-router.post("/articlesInsert",multer({storage:imageStorage}).single("image"), (req, res, next) => {
+router.post("/articlesInsert", verifyToken,multer({storage:imageStorage}).single("image"), (req, res, next) => {
   console.log("In article.js",req.body);
   insertArticle( req , res )
   //res.status(200).send("Success Call")
@@ -111,7 +150,7 @@ router.post("/articlesInsert",multer({storage:imageStorage}).single("image"), (r
 /* article post Data Ends*/
 
 /* Fetch one Article and Author */
-router.post( "/articlesOne" , (req, res) => {
+router.post( "/articlesOne" , verifyToken , (req, res) => {
   let id = req.body
   //console.log( " id is : " + id + id.aid )
   Article.find({ aid : id.aid },(error,user)=>{

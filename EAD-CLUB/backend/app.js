@@ -5,6 +5,7 @@ const cors = require('cors');
 
 
 const dataRoutes = require('./routes/functions');
+const discussRoutes = require('./routes/discuss')
 const articles = require('./routes/article');
 const newsRoutes = require('./routes/news');
 const profileRoute = require('./routes/profile-functions');
@@ -22,7 +23,7 @@ mongoose.connect('mongodb://127.0.0.1/EadClub'
   });
 
 app.use(express.json({limit: '20mb'}));
-app.use(express.urlencoded({ extended: false, limit: '20mb' }));
+app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 
 //app.use(upload.array());
 //app.use(express.static('public'));
@@ -46,4 +47,6 @@ app.use("/api/data",profileRoute);
 app.use("/api/articles",articles);
 app.use("/api/news",newsRoutes);
 app.use("/api/admin",adminRoutes);
+app.use("/api/discuss",discussRoutes);
+
 module.exports = app;
