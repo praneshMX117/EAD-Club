@@ -41,14 +41,14 @@ export class NewsComponent implements OnInit {
       this._router.navigate(['news/articles',type.aid] )
   }
 
-  initr(){
-    /* call for recent news */
+  /*initr(){
+    // call for recent news
     this._service.getRecent().subscribe((res: any) => {
         this.recent = res[0];
         //this.isDataAvailable = false
         console.log(" Recent in Component : " , this.recent , res )
         //return true
-        /* call for featured news */
+        // call for featured news
 
       } ,
       (err : any) => {
@@ -58,7 +58,7 @@ export class NewsComponent implements OnInit {
             this._router.navigate(['/login'] )
           }
         }
-      })
+      })*/
     /* call for recent news Ends*/
     /*this._service.getFeatured().subscribe(
       (res: any)=>{this.featured = res
@@ -87,6 +87,6 @@ export class NewsComponent implements OnInit {
         }
       })
     /* call for featured news ends */
-  }
+  //}
 
 }

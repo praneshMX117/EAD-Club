@@ -27,6 +27,9 @@ export class Service{
   }
   logoutUser(){
     localStorage.removeItem('token')
-    this._router.navigate(['/login'])
+    localStorage.removeItem('mail')
+    this._router.navigate(['/login']).then(() => {
+      console.log("Navigated to Login Page!")
+    });
   }
 }

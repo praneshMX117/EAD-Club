@@ -6,7 +6,8 @@ const articlesSchema = mongoose.Schema({
   title : { type : String , required : true },
   tag : { type : String , required : true },
   description : { type : String , required : true },
-  image : { type : String , required : true },
+  image: {type: Buffer, default: null},
+  imageType : {type: String, default: null},
   quote : { type : String , required : true },
   auid : { type : Number , required : true },
   time : { type : Date , required : true }

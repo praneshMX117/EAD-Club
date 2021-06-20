@@ -1,8 +1,40 @@
 const express = require("express");
 const router = express.Router();
-const Article = require('../models/articlesSchema')
+const Article = require('../models/articlesSchema');
 const Increment = require('../models/article-auto');
-const ArticleOne = require('../models/authorSchema')
+const ArticleOne = require('../models/authorSchema');
+
+
+/* Image Handling Starts */
+const multer = require("multer");
+const fs = require("fs");
+
+let user_img_name,user_img_ext,isValidImage;
+const MIME_TYPE_MAP = {
+  'image/png': 'png',
+  'image/jpeg': 'jpeg',
+  'image/jpg': 'jpg'
+};
+const imageStorage = multer.diskStorage({
+  destination: (req,file,callback) => {
+    //console.log(file,MIME_TYPE_MAP[file.mimetype]);
+    isValidImage = MIME_TYPE_MAP[file.mimetype];
+    let error = new Error("Invalid Mime Type");
+    if(isValidImage){
+      user_img_ext = file.mimetype;
+      error = null;
+    }
+    callback(error,"images"); //path should be relative to server.js file
+  },
+  filename: (req,file,callback) => {
+    const name = file.originalname.toLowerCase().split(' ').join('-');
+    let ext = MIME_TYPE_MAP[file.mimetype];
+    user_img_name = req.body.name+'.'+ ext;
+    callback(null,user_img_name);
+  }
+});
+/* Image Handling Ends */
+
 /* article data handlers*/
 /* article get by date */
 router.get( '/articles' ,  (req ,res )=> {
@@ -42,7 +74,8 @@ function insertArticle( req , res ){
                   title: req.body.title,
                   tag : req.body.tag,
                   description : req.body.description,
-                  image : req.body.image,
+                  image: fs.readFileSync(__dirname + '\\..\\images\\' + user_img_name),
+                  imageType: user_img_ext,
                   quote : req.body.quote,
                   time : Date.now(),
                   auid : req.body.auid
@@ -53,7 +86,8 @@ function insertArticle( req , res ){
                     console.log(error)
                     res.status(401).send(error.error)
                   } else {
-                    res.status(200).send("Article Inserted Successfully "+articleReg)
+                    //res.status(200).send("Article Inserted Successfully "+articleReg)
+                    res.status(200).json("New Article Created!!!")
                   }
                 })
               }
@@ -69,7 +103,8 @@ function insertArticle( req , res ){
   }) .catch(err => console.error(`Failed to find document: ${err}`));
 }
 
-router.post("/articlesInsert", (req, res, next) => {
+router.post("/articlesInsert",multer({storage:imageStorage}).single("image"), (req, res, next) => {
+  console.log("In article.js",req.body);
   insertArticle( req , res )
   //res.status(200).send("Success Call")
 });
