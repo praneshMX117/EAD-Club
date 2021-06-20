@@ -59,12 +59,14 @@ function verifyToken( req , res , next ) {
   if( !req.headers.authorization ){
     return res.status(401).send( "Unauthorized request ")
   }
+  console.log( req )
   let token = req.headers.authorization.split(' ')[1]
   if( token === 'null' )
   {
     return res.status(401).send( "Unauthorized req ")
   }
   let payload = jwt.verify( token,'secretKey')
+  console.log( "Payload is : " + payload )
   if( !payload ){
     return res.status(401).send( "Unauthorized user ")
   }
@@ -81,7 +83,7 @@ router.post("/signup", (req, res, next) => {
 /* sign Up */
 
 /* Login API */
-router.post( '/login' , (req,res)=>{
+router.post( '/login' ,  (req,res)=>{
   let userData = req.body
   Record.findOne({email:userData.email},(error,user)=>{
     if( error ){

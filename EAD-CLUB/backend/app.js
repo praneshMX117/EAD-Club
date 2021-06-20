@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const dataRoutes = require('./routes/functions');
 const articles = require('./routes/article')
 const newsRoutes = require('./routes/news')
+const discussRoutes = require('./routes/discuss')
 const app = express();
 
 mongoose.connect('mongodb://127.0.0.1/EadClub'
@@ -16,7 +17,7 @@ mongoose.connect('mongodb://127.0.0.1/EadClub'
   });
 
 app.use(express.json({limit: '20mb'}));
-app.use(express.urlencoded({ extended: false, limit: '20mb' }));
+app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 
 
 
@@ -36,4 +37,6 @@ app.use((req,res,next) => {
 app.use("/api/data",dataRoutes);
 app.use("/api/articles",articles);
 app.use("/api/news",newsRoutes);
+app.use("/api/discuss",discussRoutes);
+
 module.exports = app;
