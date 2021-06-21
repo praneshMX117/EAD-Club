@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router} from "@angular/router";
 import {HttpErrorResponse } from '@angular/common/http'
 import { NewsService} from "../news.service";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-news',
@@ -10,23 +11,36 @@ import { NewsService} from "../news.service";
 })
 export class NewsComponent implements OnInit {
 
-  constructor(private _service: NewsService, private _router: Router) {
+  constructor(private _service: NewsService, private _router: Router,public sanitizer: DomSanitizer) {
   }
   public contents : any = [];
   public recent = [] as any
   public featured : any = []
   public usual : any = []
   public test : boolean = false;
+  public imageUrl = [] as any;
   ngOnInit(): void {
 
-    /* We could use this if any veriification is needed when verifying only when users logged in could use news*/
+    /* We could use this if any verification is needed when
+    verifying only when users logged in could use news*/
     this._service.getRecent().subscribe((res: any) => {
         this.recent = res[0];
         this.featured = res[1];
         this.usual = res[2];
         this.contents = res;
         console.log(" Recent in Component : " , this.recent , res )
-      this.test = true;
+        this.test = true;
+
+        if(this.contents){
+          for(let i=0;i<this.contents.length;i++){
+            let TYPED_ARRAY = new Uint8Array(this.contents[i][0].image.data);
+            const STRING_CHAR = TYPED_ARRAY.reduce((data, byte)=> {
+              return data + String.fromCharCode(byte);
+            }, '');
+            let base64String = btoa(STRING_CHAR);
+            this.imageUrl.push(this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64,' + base64String))
+          }
+        }
       } ,
       (err : any) => {
         if( err instanceof HttpErrorResponse ){
@@ -35,7 +49,7 @@ export class NewsComponent implements OnInit {
             this._router.navigate(['/login'] )
           }
         }
-      })
+      });
   }
   goToArticle( type : any ){
       this._router.navigate(['news/articles',type.aid] )

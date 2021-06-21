@@ -23,6 +23,11 @@
     </div>
   </div>
 
+
+  <div *ngFor="let image of imageUrl">
+    <img class="card-img-right flex-auto d-none d-md-block" width="400px" height="150px" [src]="image" alt="Card image cap">
+  </div>
+
   <div class="row mb-2">
     <div class="col-md-6">
       <div class="card flex-md-row mb-4 box-shadow h-md-250" *ngFor="let feature of featured" (click)="goToArticle( feature )">
@@ -35,7 +40,7 @@
           <p class="card-text mb-auto">{{ feature.title }}.... </p>
           <a (click)="goToArticle( feature )" style="color: deepskyblue">Continue reading</a>
         </div>
-        <img class="card-img-right flex-auto d-none d-md-block" src="../images/image3.jpg" alt="Card image cap">
+        <img class="card-img-right flex-auto d-none d-md-block" width="400px" height="150px" [src]="" alt="Card image cap">
       </div>
     </div>
     <div class="col-md-6">
@@ -49,7 +54,7 @@
           <p class="card-text mb-auto">{{ local.quote }}....</p>
           <a (click)="goToArticle( local )" style="color: deepskyblue">Continue reading</a>
         </div>
-        <img class="card-img-right flex-auto d-none d-md-block" src="../images/image4.jpg" alt="Card image cap">
+        <img class="card-img-right flex-auto d-none d-md-block" [src]="" alt="Card image cap">
       </div>
     </div>
   </div>

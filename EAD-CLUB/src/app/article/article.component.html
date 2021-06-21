@@ -5,6 +5,10 @@
 &nbsp;&nbsp;
 <a (click) = "goNext()" class="btn btn-dark" style="float: right">Next</a>
 
+<!--<br>
+<div *ngFor = "let image of imageUrl">
+  <img [src]="image"  height="200px" width="400px" title="briyani" alt="teamNews Photo">
+</div>-->
 <!--div *ngIf = "loaded"-->
 <div class="blog-single gray-bg" *ngFor = "let art of article">
   <div class="container">
@@ -12,7 +16,7 @@
       <div class="col-lg-8 m-15px-tb">
         <article class="article">
           <div class="article-img">
-            <img src="../images/image7.jpg" title="briyani" alt="teamNews Photo">
+            <img [src]="singleImageUrl" title="briyani" alt="teamNews Photo">
           </div>
           <div class="article-title">
             <h6><a href="#">Article</a></h6>

@@ -3,7 +3,8 @@ const router = express.Router();
 const Article = require('../models/articlesSchema');
 const Increment = require('../models/article-auto');
 const ArticleOne = require('../models/authorSchema');
-
+const DiscussAuto = require('../models/discuss-auto')
+const jwt = require("jsonwebtoken");
 
 /* Image Handling Starts */
 const multer = require("multer");
@@ -35,9 +36,6 @@ const imageStorage = multer.diskStorage({
 });
 /* Image Handling Ends */
 
-const ArticleOne = require('../models/authorSchema')
-const DiscussAuto = require('../models/discuss-auto')
-const jwt = require("jsonwebtoken");
 /* Token Verifier */
 function verifyToken( req , res , next ) {
   if( !req.headers.authorization ){

@@ -3,6 +3,8 @@ import {ActivatedRoute, ParamMap , Router} from "@angular/router";
 import {ArticleService} from "../article.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {DiscussService} from "../discuss.service";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+
 @Component({
   selector: 'app-article',
   templateUrl: './article.component.html',
@@ -13,7 +15,8 @@ export class ArticleComponent implements OnInit {
   constructor( private route : ActivatedRoute
                , private router:Router
                , private _article : ArticleService
-               , private _discuss : DiscussService) { }
+               , private _discuss : DiscussService
+               , public sanitizer: DomSanitizer) { }
   public article_id : any;
   public obj : any = {};
   public article : any = [];
@@ -22,6 +25,8 @@ export class ArticleComponent implements OnInit {
   public discuss : any = []
   public discussFlag : boolean = false
   public formComment : any;
+  public imageUrl = [] as any;
+  public singleImageUrl: any;
   specialEvents : any = []
   ngOnInit(): void {
     this.route.paramMap.subscribe( (params : ParamMap) =>{
@@ -29,7 +34,28 @@ export class ArticleComponent implements OnInit {
       this.getOneArticle( this.article_id )
     })
     this._article.getArticles().subscribe(
-      (res: any)=>this.specialEvents = res ,
+      (res: any)=>{
+        this.specialEvents = res;
+        console.log("Hey! In component",res);
+        if(res){
+          let TYPED_ARRAY = new Uint8Array(res[this.article_id-1].image.data);
+          const STRING_CHAR = TYPED_ARRAY.reduce((data, byte)=> {
+            return data + String.fromCharCode(byte);
+          }, '');
+          let base64String = btoa(STRING_CHAR);
+          this.singleImageUrl = this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64,' + base64String);
+          /*for(let i=0;i<res.length;i++){
+            console.log("Hey !",res[i].image.data);
+            console.log("Hey !",this.article_id);
+            let TYPED_ARRAY = new Uint8Array(res[this.article_id-1].image.data);
+            const STRING_CHAR = TYPED_ARRAY.reduce((data, byte)=> {
+              return data + String.fromCharCode(byte);
+            }, '');
+            let base64String = btoa(STRING_CHAR);
+            this.imageUrl.push(this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64,' + base64String))
+          }*/
+        }
+      },
       (err : any) => {
         if( err instanceof HttpErrorResponse ){
           if( err.status === 401 )
@@ -121,7 +147,7 @@ export class ArticleComponent implements OnInit {
       (res: any) => {
           this.article = res[0]
           this.author = res[1]
-        console.log("The article and auth are : " + res + res[0] + res[1] + res[0][0] )
+          console.log("The article and auth are : " + res + res[0] + res[1] + res[0][0] );
           this.loaded = true
       },
       (err: any) => {
