@@ -32,14 +32,28 @@ export class NewsComponent implements OnInit {
         this.test = true;
 
         if(this.contents){
-          for(let i=0;i<this.contents.length;i++){
+          /*for(let i=0;i<this.contents.length;i++){
             let TYPED_ARRAY = new Uint8Array(this.contents[i][0].image.data);
             const STRING_CHAR = TYPED_ARRAY.reduce((data, byte)=> {
               return data + String.fromCharCode(byte);
             }, '');
             let base64String = btoa(STRING_CHAR);
             this.imageUrl.push(this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64,' + base64String))
-          }
+          }*/
+
+          let TYPED_ARRAY = new Uint8Array(this.featured[0].image.data);
+          let STRING_CHAR = TYPED_ARRAY.reduce((data, byte)=> {
+            return data + String.fromCharCode(byte);
+          }, '');
+          let base64String = btoa(STRING_CHAR);
+          this.imageUrl.push(this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64,' + base64String))
+
+          TYPED_ARRAY = new Uint8Array(this.usual[0].image.data);
+          STRING_CHAR = TYPED_ARRAY.reduce((data, byte)=> {
+            return data + String.fromCharCode(byte);
+          }, '');
+          base64String = btoa(STRING_CHAR);
+          this.imageUrl.push(this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64,' + base64String))
         }
       } ,
       (err : any) => {

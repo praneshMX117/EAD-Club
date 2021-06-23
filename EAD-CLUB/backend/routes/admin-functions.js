@@ -6,6 +6,7 @@ const Increment = require('../models/author-auto');
 
 const router = express.Router();
 
+/* validate and store image in local folder starts */
 let user_img_name,user_img_ext,isValidImage;
 const MIME_TYPE_MAP = {
   'image/png': 'png',
@@ -30,7 +31,9 @@ const imageStorage = multer.diskStorage({
     callback(null,user_img_name);
   }
 });
+/* validate and store image in local folder ends */
 
+/* Create Author starts */
 router.post(
   "/createAuthor",
   multer({storage:imageStorage}).single("image"),
@@ -63,5 +66,6 @@ router.post(
     }).catch(err => console.error(`Hey! Failed to fetch author id: ${err}`));
   }
 );
+/* Create Author ends */
 
 module.exports = router;

@@ -30,7 +30,7 @@ const imageStorage = multer.diskStorage({
   filename: (req,file,callback) => {
     const name = file.originalname.toLowerCase().split(' ').join('-');
     let ext = MIME_TYPE_MAP[file.mimetype];
-    user_img_name = req.body.name+'.'+ ext;
+    user_img_name = name + '.'+ ext;
     callback(null,user_img_name);
   }
 });
@@ -110,7 +110,7 @@ function insertArticle( req , res ){
                     res.status(401).send(error.error)
                   } else {
                     //res.status(200).send("Article Inserted Successfully "+articleReg)
-                    res.status(200).json("New Article Created!!!")
+                    //res.status(200).json("New Article Created!!!")
                     const art = new DiscussAuto({
                       sequence_value : 0,
                       aid : seq_val
@@ -124,7 +124,7 @@ function insertArticle( req , res ){
                         console.log("Added a auto increment for discussion")
                       }
                     })
-                    res.status(200).send("Article Inserted Successfully "+articleReg)
+                    res.status(200).json("Article Inserted Successfully ");
                   }
                 })
               }

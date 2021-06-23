@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit {
       this.service.login(this.loginUserData)
         .subscribe(
           (res: any) => {
+            console.log(res);
             localStorage.setItem( 'token' , res.token )
             localStorage.setItem( 'email' , this.loginUserData.email )
             this._router.navigate(['/news']).then(() => { console.log("navigated to news page")})

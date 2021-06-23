@@ -25,7 +25,8 @@ export class ArticleComponent implements OnInit {
   public discuss : any = []
   public discussFlag : boolean = false
   public formComment : any;
-  public imageUrl = [] as any;
+  public ArticleUrl = [] as any;
+  public AuthorUrl = [] as any;
   public singleImageUrl: any;
   specialEvents : any = []
   ngOnInit(): void {
@@ -35,26 +36,11 @@ export class ArticleComponent implements OnInit {
     })
     this._article.getArticles().subscribe(
       (res: any)=>{
-        this.specialEvents = res;
+        if(res.length>3)
+          this.specialEvents = res.slice(0,4);
+        else
+          this.specialEvents = res;
         console.log("Hey! In component",res);
-        if(res){
-          let TYPED_ARRAY = new Uint8Array(res[this.article_id-1].image.data);
-          const STRING_CHAR = TYPED_ARRAY.reduce((data, byte)=> {
-            return data + String.fromCharCode(byte);
-          }, '');
-          let base64String = btoa(STRING_CHAR);
-          this.singleImageUrl = this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64,' + base64String);
-          /*for(let i=0;i<res.length;i++){
-            console.log("Hey !",res[i].image.data);
-            console.log("Hey !",this.article_id);
-            let TYPED_ARRAY = new Uint8Array(res[this.article_id-1].image.data);
-            const STRING_CHAR = TYPED_ARRAY.reduce((data, byte)=> {
-              return data + String.fromCharCode(byte);
-            }, '');
-            let base64String = btoa(STRING_CHAR);
-            this.imageUrl.push(this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64,' + base64String))
-          }*/
-        }
       },
       (err : any) => {
         if( err instanceof HttpErrorResponse ){
@@ -147,8 +133,24 @@ export class ArticleComponent implements OnInit {
       (res: any) => {
           this.article = res[0]
           this.author = res[1]
-          console.log("The article and auth are : " + res + res[0] + res[1] + res[0][0] );
-          this.loaded = true
+          //console.log("The article and auth are : " + res + res[0] + res[1] + res[0][0] );
+
+        let TYPED_ARRAY = new Uint8Array(this.article[0].image.data);
+        let STRING_CHAR = TYPED_ARRAY.reduce((data, byte)=> {
+          return data + String.fromCharCode(byte);
+        }, '');
+        let base64String = btoa(STRING_CHAR);
+        this.ArticleUrl = this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64,' + base64String);
+
+        //console.log("In component ",this.author);
+        TYPED_ARRAY = new Uint8Array(this.author[0].image.data);
+        STRING_CHAR = TYPED_ARRAY.reduce((data, byte)=> {
+          return data + String.fromCharCode(byte);
+        }, '');
+        base64String = btoa(STRING_CHAR);
+        this.AuthorUrl = this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64,' + base64String);
+
+        this.loaded = true;
       },
       (err: any) => {
         console.log("Could not fetch One Article " + err.error )
@@ -162,11 +164,13 @@ export class ArticleComponent implements OnInit {
   goPrevious(){
     let previousId = this.article_id - 1
     this.discussFlag = false
+    this.loaded = false;
     this.router.navigate(['../' , previousId ],{relativeTo:this.route})
   }
   goNext(){
     let nextId = this.article_id + 1
     this.discussFlag = false
+    this.loaded = false;
     this.router.navigate(['../' , nextId ],{relativeTo:this.route})
   }
 }
