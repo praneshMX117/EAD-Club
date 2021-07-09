@@ -76,35 +76,27 @@ function insertUser( req , res ){
   }) .catch(err => console.error(`Failed to find document: ${err}`));
  }
 /* auto increment uid  and insert user ends*/
-/* Token Verifier */
-function verifyToken( req , res , next ) {
-  if( !req.headers.authorization ){
-    return res.status(401).send( "Unauthorized request ")
-  }
-  console.log( req )
-  let token = req.headers.authorization.split(' ')[1]
-  if( token === 'null' )
-  {
-    return res.status(401).send( "Unauthorized req ")
-  }
-  let payload = jwt.verify( token,'secretKey')
-  console.log( "Payload is : " + payload )
-  if( !payload ){
-    return res.status(401).send( "Unauthorized user ")
-  }
-  req.userId = payload.subject
-  next()
-}
-/* END Token Verifier */
 /* start signup */
 router.post("/signup", (req, res) => {
       insertUser( req , res )
 });
 
 /* sign Up */
-
+/* Token Verifier */
+function verifyToken1( req , res , next ) {
+  console.log("Token Called")
+  let token = req.headers.authorization.split(' ')[1]
+  let payload = jwt.verify( token,'secretKey')
+  if( payload ){
+    return res.status(401).send("Authorized User")
+  }
+  console.log("Token Called")
+  req.userId = payload.subject
+  next()
+}
+/* Verify token Ends*/
 /* Login API */
-router.post( '/login' ,  (req,res)=>{
+router.post( '/login'  ,  (req,res)=>{ //verifyToken1
   let userData = req.body
   Record.findOne({email:userData.email},(error,user)=>{
     if( error ){
@@ -130,17 +122,6 @@ router.post( '/login' ,  (req,res)=>{
   })
 })
 /* End Login API */
-/* Api for news */
-router.get( '/news' , verifyToken, (req ,res )=> {
-  // events has Name City Country
-  let specials = [
-    {
-      "Name": "Alfreds Futterkiste",
-      "City": "Berlin",
-      "Country": "Germany"
-    }
-  ]
-  res.json( specials )
-})
-/* Api news ends */
+
+
 module.exports = router;

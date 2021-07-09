@@ -15,14 +15,13 @@ const MIME_TYPE_MAP = {
 };
 const imageStorage = multer.diskStorage({
   destination: (req,file,callback) => {
-    //console.log(file,MIME_TYPE_MAP[file.mimetype]);
     isValidImage = MIME_TYPE_MAP[file.mimetype];
     let error = new Error("Invalid Mime Type");
     if(isValidImage){
       user_img_ext = file.mimetype;
       error = null;
     }
-    callback(error,"images"); //path should be relative to server.js file
+    callback(error,"EAD-CLUB\\backend\\images"); //path should be relative to server.js file
   },
   filename: (req,file,callback) => {
     const name = file.originalname.toLowerCase().split(' ').join('-');
@@ -38,8 +37,10 @@ router.post(
   "/createAuthor",
   multer({storage:imageStorage}).single("image"),
   (req,res) => {
+    console.log( "Author inserted")
     Increment.findOne({name:"pranesh"}).then(result => {
       if( result ) {
+        console.log( "Author auto inc called and result retured")
         const num = parseInt(result.sequence_value);
         if(num){
           const user = new Record({
@@ -49,6 +50,7 @@ router.post(
             image: fs.readFileSync(__dirname + '\\..\\images\\' + user_img_name),
             imageType: user_img_ext,
           });
+
           user.save((error) => {
             if(error)
               console.log("Inserting Author Fail");

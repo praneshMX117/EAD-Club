@@ -25,7 +25,7 @@ const imageStorage = multer.diskStorage({
       user_img_ext = file.mimetype;
       error = null;
     }
-    callback(error,"images"); //path should be relative to server.js file
+    callback(error,"EAD-CLUB\\backend\\images"); //path should be relative to server.js file
   },
   filename: (req,file,callback) => {
     const name = file.originalname.toLowerCase().split(' ').join('-');
@@ -122,9 +122,10 @@ function insertArticle( req , res ){
                       }
                       else{
                         console.log("Added a auto increment for discussion")
+                        res.status(200).json("Article Inserted Successfully ");
                       }
                     })
-                    res.status(200).json("Article Inserted Successfully ");
+                    //res.status(200).json("Article Inserted Successfully ");
                   }
                 })
               }
@@ -140,7 +141,7 @@ function insertArticle( req , res ){
   }) .catch(err => console.error(`Failed to find document: ${err}`));
 }
 
-router.post("/articlesInsert", verifyToken,multer({storage:imageStorage}).single("image"), (req, res, next) => {
+router.post("/articlesInsert", multer({storage:imageStorage}).single("image"), (req, res, next) => {
   console.log("In article.js",req.body);
   insertArticle( req , res )
   //res.status(200).send("Success Call")

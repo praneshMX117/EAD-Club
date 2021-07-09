@@ -4,21 +4,21 @@ const Article = require('../models/articlesSchema')
 
 /* article get by recent date */
 router.get( '/recent' ,  (req ,res )=> {
-  Article.find({tag:"recent"} ,(error,user)=>{
+  Article.find({tag:"Recent"} ,(error,user)=>{
     if( error ){
       console.log("Error in All Article Fetch :  "+error )
       res.status(401).send("Error in recent")
     }
     else{
       console.log("News Articles Recent Fetched Successfully : "+user)
-      Article.find({tag:"team"} ,(error,user1)=>{ //tag : "Team"
+      Article.find({tag:"Team"} ,(error,user1)=>{ //tag : "Team"
         if( error ){
           console.log("Error in All Article Fetch :  "+error )
           res.status(401).send("Error in featured")
         }
         else{
           console.log("News Articles featured Fetched Successfully")
-          Article.find({tag:"local"} ,(error,user2)=>{ //tag : "local"
+          Article.find({tag:"Local"} ,(error,user2)=>{ //tag : "local"
             if( error ){
               console.log("Error in All Article Fetch :  "+error )
               res.status(401).send("Error in local")

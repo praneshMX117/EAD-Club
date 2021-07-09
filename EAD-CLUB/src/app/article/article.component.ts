@@ -163,9 +163,12 @@ export class ArticleComponent implements OnInit {
   }
   goPrevious(){
     let previousId = this.article_id - 1
-    this.discussFlag = false
-    this.loaded = false;
-    this.router.navigate(['../' , previousId ],{relativeTo:this.route})
+    if( previousId >= 0 ){
+      this.discussFlag = false
+      this.loaded = false;
+
+      this.router.navigate(['../' , previousId ],{relativeTo:this.route})
+    }
   }
   goNext(){
     let nextId = this.article_id + 1

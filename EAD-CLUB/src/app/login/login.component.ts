@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   public loginUserData : any = {}
 
   constructor(public service: Service , private _router : Router, private _snackBar: MatSnackBar ) {
+
   }
 
   /* To display alert messages */

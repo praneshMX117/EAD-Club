@@ -19,6 +19,7 @@ export class CreateArticleComponent implements OnInit {
     this.form = new FormGroup({
       'title': new FormControl(null,{validators: [Validators.required]}),
       'tag': new FormControl(null,{validators: [Validators.required]}),
+      'author': new FormControl(null,{validators: [Validators.required]}),
       'description': new FormControl(null,{validators: [Validators.required]}),
       'image': new FormControl(null,{validators: [Validators.required]}),
       'quote': new FormControl(null,{validators: [Validators.required]}),
@@ -50,14 +51,14 @@ export class CreateArticleComponent implements OnInit {
         this.openSnackBar("Invalid Credentials!!!", "Ok");
       }
       else{
-        console.log("In component ",this.form.value);
+        console.log("In component ",this.form.value , this.form.value.author );
         this.service.createNewArticle(
           this.form.value.title,
           this.form.value.tag,
           this.form.value.description,
           this.form.value.image,
           this.form.value.quote,
-          1 //author id
+          this.form.value.author
         ).subscribe( result => {
           this.openSnackBar(result as string, "Ok");
           this._router.navigate(['/admin']).then(() => { console.log("navigated to admin page")})

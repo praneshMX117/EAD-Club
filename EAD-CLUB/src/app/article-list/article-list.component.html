@@ -13,16 +13,16 @@
       <img class="card-img-top" [src]="imageUrl[i]"  height="200px" width="250px" alt="Card image cap">
       <div class="card-body">
         <h5 class="card-title">
-          {{event.title + event.aid }}
+          {{event.title  }}
         </h5>
         <p class="card-text">
-          {{event.description}}
+          {{event.quote}}
         </p>
         <li (click)='onSelect(event)' class="btn btn-primary">Click me</li>
       </div>
     </div>
     <div class="card-footer text-muted">
-      {{event.quote }}
+      {{event.time }}
     </div>
   </div>
 </div>
